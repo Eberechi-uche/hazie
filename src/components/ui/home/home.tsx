@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 
 export default function UnAuthHome() {
   const [photo, setPhoto] = useState([]);
-  const [tag, setTag] = useState("abstract");
+  const [tag, setTag] = useState("tribe");
   const active = "#fff";
   const notactive = "#9a9a9a";
   return (
@@ -50,10 +50,19 @@ export default function UnAuthHome() {
               lg: "5xl",
             }}
           >
-            Curate, create and make the collection of yours
+            Curate, create or organise. make the collection of yours
           </Text>
           <Flex my={"4"}>
-            <Button bg={"#fff"} borderRadius={"none"}>
+            <Button
+              bg={"#fff"}
+              borderRadius={"none"}
+              fontWeight={"900"}
+              _hover={{
+                background: "#c53211",
+                color: "#fff",
+              }}
+              w={"50%"}
+            >
               Get started
             </Button>
           </Flex>
@@ -68,7 +77,7 @@ export default function UnAuthHome() {
             px={"4"}
           >
             <Text fontSize={"2xs"} alignSelf={"flex-start"}>
-              click tags to get collection
+              click to see collection
             </Text>
           </Flex>
 
@@ -79,30 +88,35 @@ export default function UnAuthHome() {
             }}
             overflowX={"scroll"}
             fontSize={"lg"}
+            sx={{
+              "::-webkit-scrollbar": {
+                display: "none",
+              },
+            }}
           >
             <TagSelector
-              id="Abstract"
+              id="tribe"
               active={active}
               notactive={notactive}
               setTag={setTag}
               tag={tag}
             />
             <TagSelector
-              id="Lagos"
+              id="lagos"
               active={active}
               notactive={notactive}
               setTag={setTag}
               tag={tag}
             />
             <TagSelector
-              id="Africa"
+              id="africa"
               active={active}
               notactive={notactive}
               setTag={setTag}
               tag={tag}
             />
             <TagSelector
-              id="Color"
+              id="color"
               active={active}
               notactive={notactive}
               setTag={setTag}
@@ -124,6 +138,20 @@ export default function UnAuthHome() {
             />
             <TagSelector
               id="people"
+              active={active}
+              notactive={notactive}
+              setTag={setTag}
+              tag={tag}
+            />
+            <TagSelector
+              id="art"
+              active={active}
+              notactive={notactive}
+              setTag={setTag}
+              tag={tag}
+            />
+            <TagSelector
+              id="photography"
               active={active}
               notactive={notactive}
               setTag={setTag}
@@ -157,6 +185,7 @@ function TagSelector({
       onClick={() => {
         setTag(id);
       }}
+      textTransform={"capitalize"}
     >
       {id}
     </Text>
