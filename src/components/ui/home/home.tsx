@@ -2,12 +2,14 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
 import NavBar from "../nav/navbar";
 import { Dispatch, SetStateAction, useState } from "react";
+import ImageCreditCard from "../card/imageCreditCard";
+import { useRouter } from "next/navigation";
 
 export default function UnAuthHome() {
   const [photo, setPhoto] = useState([]);
   const [tag, setTag] = useState("tribe");
-  const active = "#fff";
-  const notactive = "#9a9a9a";
+  const route = useRouter();
+
   return (
     <Flex
       w={"100%"}
@@ -21,7 +23,11 @@ export default function UnAuthHome() {
         lg: "12",
       }}
       justify={"space-between"}
+      position={"relative"}
     >
+      <Flex pos={"absolute"} p={4} bottom={"0"}>
+        <ImageCreditCard />
+      </Flex>
       <NavBar />
       <Flex
         w={"100%"}
@@ -54,14 +60,11 @@ export default function UnAuthHome() {
           </Text>
           <Flex my={"4"}>
             <Button
-              bg={"#fff"}
-              borderRadius={"none"}
-              fontWeight={"900"}
-              _hover={{
-                background: "#c53211",
-                color: "#fff",
-              }}
+              variant={"brandPrimary"}
               w={"50%"}
+              onClick={() => {
+                route.push("/UserAuth?auth=sign-up");
+              }}
             >
               Get started
             </Button>
@@ -94,69 +97,14 @@ export default function UnAuthHome() {
               },
             }}
           >
-            <TagSelector
-              id="tribe"
-              active={active}
-              notactive={notactive}
-              setTag={setTag}
-              tag={tag}
-            />
-            <TagSelector
-              id="lagos"
-              active={active}
-              notactive={notactive}
-              setTag={setTag}
-              tag={tag}
-            />
-            <TagSelector
-              id="africa"
-              active={active}
-              notactive={notactive}
-              setTag={setTag}
-              tag={tag}
-            />
-            <TagSelector
-              id="color"
-              active={active}
-              notactive={notactive}
-              setTag={setTag}
-              tag={tag}
-            />
-            <TagSelector
-              id="Landscape"
-              active={active}
-              notactive={notactive}
-              setTag={setTag}
-              tag={tag}
-            />
-            <TagSelector
-              id="sunrise"
-              active={active}
-              notactive={notactive}
-              setTag={setTag}
-              tag={tag}
-            />
-            <TagSelector
-              id="people"
-              active={active}
-              notactive={notactive}
-              setTag={setTag}
-              tag={tag}
-            />
-            <TagSelector
-              id="art"
-              active={active}
-              notactive={notactive}
-              setTag={setTag}
-              tag={tag}
-            />
-            <TagSelector
-              id="photography"
-              active={active}
-              notactive={notactive}
-              setTag={setTag}
-              tag={tag}
-            />
+            <TagSelector id="culture" setTag={setTag} tag={tag} />
+            <TagSelector id="lagos" setTag={setTag} tag={tag} />
+            <TagSelector id="africa" setTag={setTag} tag={tag} />
+            <TagSelector id="wonderlust" setTag={setTag} tag={tag} />
+            <TagSelector id="sunrise" setTag={setTag} tag={tag} />
+            <TagSelector id="people" setTag={setTag} tag={tag} />
+            <TagSelector id="art" setTag={setTag} tag={tag} />
+            <TagSelector id="photography" setTag={setTag} tag={tag} />
           </Flex>
         </Flex>
       </Flex>
@@ -167,21 +115,19 @@ export default function UnAuthHome() {
 function TagSelector({
   tag,
   id,
-  active,
-  notactive,
+
   setTag,
 }: {
   tag: string;
   id: string;
-  active: string;
-  notactive: string;
+
   setTag: Dispatch<SetStateAction<string>>;
 }) {
   return (
     <Text
       mx={"4"}
       cursor={"pointer"}
-      color={tag === id ? active : notactive}
+      color={tag === id ? "#fff" : "brand.mute"}
       onClick={() => {
         setTag(id);
       }}

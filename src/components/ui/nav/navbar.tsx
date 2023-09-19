@@ -1,12 +1,14 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
 
 export default function NavBar() {
+  const route = useRouter();
   return (
     <>
       <Flex w={"100%"}>
         <Flex justify={"space-between"} w={"100%"} align={"center"}>
           <Text fontWeight={"900"} color={"white"}>
-            Hazie
+            Hazie_
           </Text>
 
           <Button
@@ -19,6 +21,9 @@ export default function NavBar() {
               color: "#000",
             }}
             size={"sm"}
+            onClick={() => {
+              route.push("/UserAuth?auth=sign-in");
+            }}
           >
             Sign in
           </Button>

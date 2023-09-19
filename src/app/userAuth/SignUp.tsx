@@ -73,8 +73,8 @@ export default function SignUp() {
   return (
     <>
       <Flex p={"10"} flexDir={"column"} w={"100%"} minH={"max-content"}>
-        <Heading fontWeight={"400"} fontSize={"4xl"} mb={"5"}>
-          lynnk
+        <Heading fontWeight={"900"} fontSize={"4xl"} mb={"5"}>
+          Hazie_
         </Heading>
 
         <Text fontWeight={"700"} fontSize={"3xl"}>
@@ -86,12 +86,13 @@ export default function SignUp() {
               <Text> Already have an account ?</Text>
               <Link href={"/UserAuth?auth=sign-in"}>
                 <Text
-                  color={"brand.yellow"}
+                  color={"brand.primary"}
                   mx={"2"}
-                  fontWeight={"600"}
+                  fontWeight={"900"}
                   cursor={"pointer"}
+                  fontSize={"sm"}
                 >
-                  Sign in
+                  sign in
                 </Text>
               </Link>
             </Flex>
@@ -134,7 +135,12 @@ export default function SignUp() {
                   onChange={handleChange}
                 />
                 <Flex mt={"3"} justifyContent={"flex-end"}>
-                  <Button size={"sm"} type={"submit"} isLoading={loading}>
+                  <Button
+                    size={"sm"}
+                    type={"submit"}
+                    isLoading={loading}
+                    variant={"outline"}
+                  >
                     continue
                   </Button>
                 </Flex>
