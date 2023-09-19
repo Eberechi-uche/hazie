@@ -18,7 +18,7 @@ export default function AuthInput(props: {
         }}
         border={"2px solid"}
         borderColor={"brand.gray"}
-        focusBorderColor="brand.yellow"
+        focusBorderColor="brand.primary"
         type={props.type}
         borderRadius={"none"}
         placeholder={props.placeHolder}

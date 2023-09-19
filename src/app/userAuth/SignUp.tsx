@@ -67,7 +67,7 @@ export default function SignUp() {
     });
 
     if (profileUpdateStatus) {
-      route.push(`/`);
+      route.push(`/${profileId}`);
     }
   }
   return (

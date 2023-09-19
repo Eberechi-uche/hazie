@@ -122,19 +122,21 @@ export default function UnAuthHome() {
         >
           <Flex
             w={{
-              base: "90%",
-              lg: "45%",
+              base: "80%",
+              md: "60%",
+              lg: "50%",
             }}
             flexDir={"column"}
           >
             <Text
               fontSize={{
-                base: "3xl",
-                md: "5xl",
-                lg: "5xl",
+                base: "2xl",
+                md: "3xl",
+                lg: "4xl",
               }}
             >
-              Curate, create or organise photos. perfect the collection
+              Curate and organise photos. create the perfect the collection for
+              your need
             </Text>
             <Flex my={"4"}>
               <Button
@@ -191,14 +193,15 @@ export default function UnAuthHome() {
   );
 }
 
-function TagSelector({
+export function TagSelector({
   tag,
   id,
-
+  color,
   setTag,
 }: {
   tag: string;
   id: string;
+  color?: string;
 
   setTag: Dispatch<SetStateAction<string>>;
 }) {
@@ -206,7 +209,7 @@ function TagSelector({
     <Text
       mx={"4"}
       cursor={"pointer"}
-      color={tag === id ? "#fff" : "brand.mute"}
+      color={tag === id ? color || "#fff" : "brand.mute"}
       onClick={() => {
         setTag(id);
       }}

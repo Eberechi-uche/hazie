@@ -4,7 +4,6 @@ import { Flex, Grid, Text } from "@chakra-ui/react";
 import Login from "./login";
 import { useSearchParams } from "next/navigation";
 import SignUp from "./SignUp";
-import ImageCreditCard from "@/components/ui/card/imageCreditCard";
 
 export default function UserAuth() {
   const pageParam = useSearchParams().get("auth");
@@ -31,7 +30,7 @@ export default function UserAuth() {
           minH={"max-content"}
           h={{
             base: "70%",
-            lg: "fit-content",
+            md: "fit-content",
           }}
           overflow={"scroll"}
           width={"100%"}

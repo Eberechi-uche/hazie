@@ -6,6 +6,7 @@ import { auth } from "@/firebase/clientApp";
 import { useRouter } from "next/navigation";
 import { FIREBASE_ERROR } from "@/firebase/error";
 import AuthInput from "@/components/ui/input/authInput";
+import extractUserId from "@/utils/extractUserId";
 
 export default function Login() {
   const [userDefails, setUserDetails] = useState({
@@ -28,7 +29,7 @@ export default function Login() {
     const { Email, Password } = userDefails;
     const result = await signInWithEmailAndPassword(Email, Password);
     if (result) {
-      route.push("/");
+      route.push(`/${extractUserId(result.user.email!)}`);
       return;
     }
   }
