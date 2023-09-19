@@ -1,20 +1,85 @@
 "use client";
 import { Button, Flex, Text } from "@chakra-ui/react";
 import NavBar from "../nav/navbar";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import ImageCreditCard from "../card/imageCreditCard";
 import { useRouter } from "next/navigation";
+import { createApi } from "unsplash-js";
+
+type Photo = {
+  id: number;
+  width: number;
+  height: number;
+  urls: { large: string; regular: string; raw: string; small: string };
+  color: string | null;
+  user: {
+    username: string;
+    name: string;
+  };
+};
+
+export type BackgroundImage = {
+  name: string;
+  profileImg: string;
+  imageSm: string;
+  imageLg: string;
+  userLink: string;
+};
+const api = createApi({
+  // Don't forget to set your access token here!
+  // See https://unsplash.com/developers
+  accessKey: process.env.NEXT_PUBLIC_UNSPLASH_ACCESSKEY as string,
+});
 
 export default function UnAuthHome() {
-  const [photo, setPhoto] = useState([]);
-  const [tag, setTag] = useState("tribe");
+  const [photo, setPhoto] = useState<BackgroundImage[]>([]);
+  const [tag, setTag] = useState("colors");
+  const [background, setBackground] = useState(4);
+
   const route = useRouter();
+
+  useEffect(() => {
+    api.search
+      .getPhotos({ query: tag, orientation: "landscape" })
+      .then((result) => {
+        // console.log(result);
+        if (result.response?.results) {
+          const bgImages = result.response.results.map((item) => ({
+            name: item.user.name,
+            profileImg: item.user.profile_image.small,
+            userLink: item.user.portfolio_url,
+            imageLg: item.urls.full,
+            imageSm: item.urls.regular,
+          }));
+          console.log(bgImages);
+          setPhoto(bgImages as BackgroundImage[]);
+        }
+      })
+      .catch(() => {
+        console.log("something went wrong!");
+      });
+  }, [tag]);
+
+  function updateBackgroundImg() {
+    let number = Math.floor(Math.random() * 10);
+    setBackground(number);
+  }
+
+  useEffect(() => {
+    const interval = setInterval(updateBackgroundImg, 4000);
+
+    return () => clearInterval(interval);
+  });
 
   return (
     <Flex
       w={"100%"}
       flexDir={"column"}
-      bgImage={`linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.7)) , url("images/background.jpg")`}
+      bg={"#000"}
+      transition={"all 2s ease-in-out"}
+      bgImage={`linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.7)) , url(${
+        photo.length > 0 && photo[background].imageSm
+      })`}
       bgPos={"center"}
       bgSize={"cover"}
       h={"100vh"}
@@ -25,9 +90,16 @@ export default function UnAuthHome() {
       justify={"space-between"}
       position={"relative"}
     >
-      <Flex pos={"absolute"} p={4} bottom={"0"}>
-        <ImageCreditCard />
-      </Flex>
+      {photo.length > 1 && (
+        <Flex pos={"absolute"} p={4} bottom={"0"}>
+          <ImageCreditCard
+            profileUrl={photo[background].profileImg}
+            profilelink={""}
+            name={photo[background].name}
+          />
+        </Flex>
+      )}
+
       <NavBar />
       <Flex
         w={"100%"}
@@ -37,11 +109,13 @@ export default function UnAuthHome() {
         fontWeight={"900"}
         h={{
           base: "65%",
+          md: "50%",
           lg: "85%",
         }}
         justify={"space-between"}
         maxW={"1500px"}
         alignSelf={"center"}
+        mb={12}
       >
         <Flex
           w={{
@@ -53,10 +127,11 @@ export default function UnAuthHome() {
           <Text
             fontSize={{
               base: "3xl",
+              md: "5xl",
               lg: "5xl",
             }}
           >
-            Curate, create or organise. make the collection of yours
+            Curate, create or organise photos. perfect the collection
           </Text>
           <Flex my={"4"}>
             <Button

@@ -51,7 +51,7 @@ export default function UserAuth() {
             lg: "0",
           }}
         >
-          <ImageCreditCard />
+          {/* <ImageCreditCard /> */}
         </Flex>
       </Grid>
     </>

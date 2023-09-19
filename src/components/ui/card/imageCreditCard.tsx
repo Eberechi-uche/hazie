@@ -1,13 +1,21 @@
 import { Flex, Text, Image } from "@chakra-ui/react";
 import Link from "next/link";
 
-export default function ImageCreditCard() {
+export default function ImageCreditCard({
+  profileUrl,
+  name,
+  profilelink,
+}: {
+  profileUrl: string;
+  name: string;
+  profilelink: string;
+}) {
   return (
     <Flex color={"#fff"} w={"fit-content"} align={"center"}>
       <Image
         boxSize={"25px"}
         alt={"username"}
-        src={"/images/background2.jpg"}
+        src={profileUrl}
         borderRadius={"full"}
         mr={"4"}
       />
@@ -15,8 +23,8 @@ export default function ImageCreditCard() {
         <Text fontWeight={"900"} mr={"2"}>
           by
         </Text>
-        <Link href={""} target="_blank">
-          long and some
+        <Link href={profilelink} target="_blank">
+          {name}
         </Link>
       </Flex>
     </Flex>
