@@ -1,10 +1,12 @@
 "use client";
-import { Button, Flex, Text } from "@chakra-ui/react";
+import { Button, Flex, Grid, SimpleGrid, Text } from "@chakra-ui/react";
 import NavBar from "../nav/navbar";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import ImageCreditCard from "../card/imageCreditCard";
 import { useRouter } from "next/navigation";
 import { createApi } from "unsplash-js";
+import ImageCard from "../card/ImageCard";
+import { photos } from "unsplash-js/dist/internals";
 
 type Photo = {
   id: number;
@@ -33,7 +35,7 @@ const api = createApi({
 
 export default function UnAuthHome() {
   const [photo, setPhoto] = useState<BackgroundImage[]>([]);
-  const [tag, setTag] = useState("colors");
+  const [tag, setTag] = useState("Street Photography");
   const [background, setBackground] = useState(4);
 
   const route = useRouter();
@@ -72,118 +74,120 @@ export default function UnAuthHome() {
   });
 
   return (
-    <Flex
-      w={"100%"}
-      flexDir={"column"}
-      bg={"#000"}
-      transition={"all 2s ease-in-out"}
-      bgImage={`linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.7)) , url(${
-        photo.length > 0 && photo[background].imageSm
-      })`}
-      bgPos={"center"}
-      bgSize={"cover"}
-      h={"100vh"}
-      p={{
-        base: "6",
-        lg: "12",
-      }}
-      justify={"space-between"}
-      position={"relative"}
-    >
-      {photo.length > 1 && (
-        <Flex pos={"absolute"} p={4} bottom={"0"}>
-          <ImageCreditCard
-            profileUrl={photo[background].profileImg}
-            profilelink={""}
-            name={photo[background].name}
-          />
-        </Flex>
-      )}
-
-      <NavBar />
+    <>
       <Flex
         w={"100%"}
         flexDir={"column"}
-        py={"12"}
-        color={"#fff"}
-        fontWeight={"900"}
-        h={{
-          base: "65%",
-          md: "50%",
-          lg: "85%",
+        bg={"#000"}
+        transition={"all 2s ease-in-out"}
+        bgImage={`linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.7)) , url(${
+          photo.length > 0 && photo[background].imageSm
+        })`}
+        bgPos={"center"}
+        bgSize={"cover"}
+        h={"100vh"}
+        p={{
+          base: "6",
+          lg: "12",
         }}
         justify={"space-between"}
-        maxW={"1500px"}
-        alignSelf={"center"}
-        mb={12}
+        position={"relative"}
       >
+        {photo.length > 1 && (
+          <Flex pos={"absolute"} p={4} bottom={"0"}>
+            <ImageCreditCard
+              profileUrl={photo[background].profileImg}
+              profilelink={""}
+              name={photo[background].name}
+            />
+          </Flex>
+        )}
+
+        <NavBar />
         <Flex
-          w={{
-            base: "90%",
-            lg: "45%",
-          }}
+          w={"100%"}
           flexDir={"column"}
+          py={"12"}
+          color={"#fff"}
+          fontWeight={"900"}
+          h={{
+            base: "65%",
+            md: "50%",
+            lg: "85%",
+          }}
+          justify={"space-between"}
+          maxW={"1500px"}
+          alignSelf={"center"}
+          mb={12}
         >
-          <Text
-            fontSize={{
-              base: "3xl",
-              md: "5xl",
-              lg: "5xl",
+          <Flex
+            w={{
+              base: "90%",
+              lg: "45%",
             }}
+            flexDir={"column"}
           >
-            Curate, create or organise photos. perfect the collection
-          </Text>
-          <Flex my={"4"}>
-            <Button
-              variant={"brandPrimary"}
-              w={"50%"}
-              onClick={() => {
-                route.push("/UserAuth?auth=sign-up");
+            <Text
+              fontSize={{
+                base: "3xl",
+                md: "5xl",
+                lg: "5xl",
               }}
             >
-              Get started
-            </Button>
-          </Flex>
-        </Flex>
-        <Flex align={"flex-end"} w={"100%"} flexDir={"column"}>
-          <Flex
-            w={{
-              base: "70%",
-              lg: "60%",
-            }}
-            py={"4"}
-            px={"4"}
-          >
-            <Text fontSize={"2xs"} alignSelf={"flex-start"}>
-              click to see collection
+              Curate, create or organise photos. perfect the collection
             </Text>
+            <Flex my={"4"}>
+              <Button
+                variant={"brandPrimary"}
+                w={"50%"}
+                onClick={() => {
+                  route.push("/UserAuth?auth=sign-up");
+                }}
+              >
+                Get started
+              </Button>
+            </Flex>
           </Flex>
+          <Flex align={"flex-end"} w={"100%"} flexDir={"column"}>
+            <Flex
+              w={{
+                base: "70%",
+                lg: "60%",
+              }}
+              py={"4"}
+              px={"4"}
+            >
+              <Text fontSize={"2xs"} alignSelf={"flex-start"}>
+                click to see collection
+              </Text>
+            </Flex>
 
-          <Flex
-            w={{
-              base: "70%",
-              lg: "60%",
-            }}
-            overflowX={"scroll"}
-            fontSize={"lg"}
-            sx={{
-              "::-webkit-scrollbar": {
-                display: "none",
-              },
-            }}
-          >
-            <TagSelector id="culture" setTag={setTag} tag={tag} />
-            <TagSelector id="lagos" setTag={setTag} tag={tag} />
-            <TagSelector id="africa" setTag={setTag} tag={tag} />
-            <TagSelector id="wonderlust" setTag={setTag} tag={tag} />
-            <TagSelector id="sunrise" setTag={setTag} tag={tag} />
-            <TagSelector id="people" setTag={setTag} tag={tag} />
-            <TagSelector id="art" setTag={setTag} tag={tag} />
-            <TagSelector id="photography" setTag={setTag} tag={tag} />
+            <Flex
+              w={{
+                base: "70%",
+                lg: "60%",
+              }}
+              overflowX={"scroll"}
+              fontSize={"lg"}
+              sx={{
+                "::-webkit-scrollbar": {
+                  display: "none",
+                },
+              }}
+            >
+              <TagSelector id="culture" setTag={setTag} tag={tag} />
+              <TagSelector id="lagos" setTag={setTag} tag={tag} />
+              <TagSelector id="africa" setTag={setTag} tag={tag} />
+              <TagSelector id="wonderlust" setTag={setTag} tag={tag} />
+              <TagSelector id="sunrise" setTag={setTag} tag={tag} />
+              <TagSelector id="people" setTag={setTag} tag={tag} />
+              <TagSelector id="art" setTag={setTag} tag={tag} />
+              <TagSelector id="photography" setTag={setTag} tag={tag} />
+            </Flex>
           </Flex>
         </Flex>
       </Flex>
-    </Flex>
+    </>
   );
 }
 
