@@ -1,10 +1,10 @@
 "use client";
 
-import { Flex, Text } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import ProfileCard from "../card/profileCard";
 import { auth } from "@/firebase/clientApp";
 import { useAuthState } from "react-firebase-hooks/auth";
-import Login from "@/app/UserAuth/login";
+
 import Link from "next/link";
 
 export default function AuthNavBar() {
@@ -21,9 +21,20 @@ export default function AuthNavBar() {
           align={"center"}
           justify={"center"}
         >
-          <Flex>
-            <Login />
-          </Flex>
+          <Link href={"/UserAuth?auth=sign-in"}>
+            <Flex flexDir={"column"} w={"100%"}>
+              <Text
+                fontWeight={"900"}
+                fontSize={"xs"}
+                my={"4"}
+                textAlign={"center"}
+              >
+                Please sign in to continue
+              </Text>
+
+              <Button variant={"brandPrimary"}>Login</Button>
+            </Flex>
+          </Link>
         </Flex>
       )}
       {user && (

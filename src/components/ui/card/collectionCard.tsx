@@ -179,7 +179,18 @@ export function CollectionCardLayout({
               </Fragment>
             ))}
           {collection.length === 0 && (
-            <Text>you have no collection, create one</Text>
+            <Text
+              w={{
+                base: "80%",
+                lg: "50%",
+              }}
+              color={"brand.darkgray"}
+              fontSize={"xs"}
+            >
+              you have no collection, create collection folder and drag images
+              to add to it. click to view your added images. click the add
+              button to create
+            </Text>
           )}
         </Flex>
       </Flex>

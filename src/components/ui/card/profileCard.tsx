@@ -1,3 +1,4 @@
+import { auth } from "@/firebase/clientApp";
 import { Flex, Image } from "@chakra-ui/react";
 import {
   Menu,
@@ -9,6 +10,7 @@ import {
   MenuOptionGroup,
   MenuDivider,
 } from "@chakra-ui/react";
+import { useSignOut } from "react-firebase-hooks/auth";
 
 export default function ProfileCard({
   location,
@@ -17,6 +19,7 @@ export default function ProfileCard({
   location: "home" | "profile";
   image: string;
 }) {
+  const [signOut, loading, error] = useSignOut(auth);
   return (
     <Flex>
       <Flex>
@@ -35,6 +38,7 @@ export default function ProfileCard({
             color={"#fff"}
             borderRadius={"none"}
             fontSize={"xs"}
+            zIndex={"3"}
           >
             <Flex
               flexDir={"column"}
@@ -46,7 +50,9 @@ export default function ProfileCard({
                 <MenuItem bg={"inherit"}>New collection</MenuItem>
               </Flex>
               <Flex>
-                <MenuItem bg={"inherit"}>Sign out</MenuItem>
+                <MenuItem bg={"inherit"} onClick={() => signOut()}>
+                  Sign out
+                </MenuItem>
               </Flex>
             </Flex>
           </MenuList>
