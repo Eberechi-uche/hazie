@@ -10,10 +10,10 @@ const solid = defineStyle({
   borderColor: "#000",
   color: "#fff",
   _hover: {
-    backgroundColor: "#fff",
-    color: "#000",
+    background: "#c53211",
+    color: "#fff",
     border: "2px solid",
-    borderColor: "#fff",
+    borderColor: "#c53211",
   },
 });
 

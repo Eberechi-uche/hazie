@@ -101,5 +101,12 @@ a {
 }
 main {
   min-height: 100dvh;
+  height: max-content;
   width: 100dvw;
+}
+.link {
+  text-decoration: underline;
+}
+.text-brand-red {
+  color: #c53211;
 }

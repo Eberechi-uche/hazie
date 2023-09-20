@@ -73,8 +73,8 @@ export default function SignUp() {
   return (
     <>
       <Flex p={"10"} flexDir={"column"} w={"100%"} minH={"max-content"}>
-        <Heading fontWeight={"900"} fontSize={"4xl"} mb={"5"}>
-          Hazie_
+        <Heading fontWeight={"900"} fontSize={"2xl"} mb={"5"}>
+          Hazie<span className="text-brand-red">_</span>
         </Heading>
 
         <Text fontWeight={"700"} fontSize={"3xl"}>

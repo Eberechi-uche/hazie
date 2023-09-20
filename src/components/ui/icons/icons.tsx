@@ -1,4 +1,4 @@
-import { Icon } from "@chakra-ui/react";
+import { Icon, useDisclosure } from "@chakra-ui/react";
 
 export function SearchIcon(props: any) {
   return (
@@ -11,6 +11,29 @@ export function SearchIcon(props: any) {
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
+          />
+        </svg>
+      </Icon>
+    </>
+  );
+}
+
+export function AddIcon(props: any) {
+  return (
+    <>
+      <Icon fontSize={"13px"}>
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M10.0001 3C10.5524 3 11.0001 3.44772 11.0001 4V9H16.0001C16.5524 9 17.0001 9.44772 17.0001 10C17.0001 10.5523 16.5524 11 16.0001 11H11.0001V16C11.0001 16.5523 10.5524 17 10.0001 17C9.44784 17 9.00012 16.5523 9.00012 16V11H4.00012C3.44784 11 3.00012 10.5523 3.00012 10C3.00012 9.44771 3.44784 9 4.00012 9L9.00012 9V4C9.00012 3.44772 9.44784 3 10.0001 3Z"
+            fill="#111827"
           />
         </svg>
       </Icon>
@@ -35,7 +58,7 @@ export function CollectinIcon(props: any) {
           />
           <path
             d="M5.00012 11C3.89555 11 3.00012 11.8954 3.00012 13V15C3.00012 16.1046 3.89555 17 5.00012 17H7.00012C8.10469 17 9.00012 16.1046 9.00012 15V13C9.00012 11.8954 8.10469 11 7.00012 11H5.00012Z"
-            fill="#111827"
+            fill="#696969"
           />
           <path
             d="M11.0001 5C11.0001 3.89543 11.8956 3 13.0001 3H15.0001C16.1047 3 17.0001 3.89543 17.0001 5V7C17.0001 8.10457 16.1047 9 15.0001 9H13.0001C11.8956 9 11.0001 8.10457 11.0001 7V5Z"

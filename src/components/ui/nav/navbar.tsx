@@ -1,4 +1,5 @@
 import { Button, Flex, Text } from "@chakra-ui/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function NavBar() {
@@ -7,9 +8,11 @@ export default function NavBar() {
     <>
       <Flex w={"100%"}>
         <Flex justify={"space-between"} w={"100%"} align={"center"}>
-          <Text fontWeight={"900"} color={"white"}>
-            Hazie_
-          </Text>
+          <Link href={"/"}>
+            <Text fontWeight={"900"} color={"white"}>
+              Hazie<span className="text-brand-red">_</span>
+            </Text>
+          </Link>
 
           <Button
             bg={"#000"}

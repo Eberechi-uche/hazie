@@ -23,7 +23,7 @@ export default function ImageCreditCard({
         <Text fontWeight={"900"} mr={"2"}>
           by
         </Text>
-        <Link href={profilelink} target="_blank">
+        <Link href={profilelink} target="_blank" className="link">
           {name}
         </Link>
       </Flex>

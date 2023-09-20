@@ -1,12 +1,24 @@
 "use client";
 import { Button, Flex, Grid, SimpleGrid, Text } from "@chakra-ui/react";
 import NavBar from "../nav/navbar";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, Fragment, SetStateAction, useEffect, useState } from "react";
 import ImageCreditCard from "../card/imageCreditCard";
 import { useRouter } from "next/navigation";
 import { createApi } from "unsplash-js";
-import ImageCard from "../card/ImageCard";
-import { photos } from "unsplash-js/dist/internals";
+
+const collection = [
+  "Photography",
+  "Art",
+  "People",
+  "Sunrise",
+  "Wonderlust",
+  "Africa",
+  "Lagos",
+  "Culture",
+  "happy",
+  "wedding",
+  "travel",
+];
 
 type Photo = {
   id: number;
@@ -26,6 +38,7 @@ export type BackgroundImage = {
   imageSm: string;
   imageLg: string;
   userLink: string;
+  alt_description: string;
 };
 const api = createApi({
   // Don't forget to set your access token here!
@@ -36,7 +49,7 @@ const api = createApi({
 export default function UnAuthHome() {
   const [photo, setPhoto] = useState<BackgroundImage[]>([]);
   const [tag, setTag] = useState("Street Photography");
-  const [background, setBackground] = useState(4);
+  const [background, setBackground] = useState(0);
 
   const route = useRouter();
 
@@ -44,16 +57,16 @@ export default function UnAuthHome() {
     api.search
       .getPhotos({ query: tag, orientation: "landscape" })
       .then((result) => {
-        // console.log(result);
         if (result.response?.results) {
           const bgImages = result.response.results.map((item) => ({
             name: item.user.name,
             profileImg: item.user.profile_image.small,
-            userLink: item.user.portfolio_url,
+            userLink: item.user.links.html,
             imageLg: item.urls.full,
             imageSm: item.urls.regular,
+            alt_description: item.alt_description,
           }));
-          console.log(bgImages);
+
           setPhoto(bgImages as BackgroundImage[]);
         }
       })
@@ -63,8 +76,14 @@ export default function UnAuthHome() {
   }, [tag]);
 
   function updateBackgroundImg() {
-    let number = Math.floor(Math.random() * 10);
-    setBackground(number);
+    if (background < 9) {
+      setBackground(() => background + 1);
+      return;
+    }
+    if (background >= 9) {
+      setBackground(() => 0);
+      return;
+    }
   }
 
   useEffect(() => {
@@ -79,7 +98,7 @@ export default function UnAuthHome() {
         w={"100%"}
         flexDir={"column"}
         bg={"#000"}
-        transition={"all 2s ease-in-out"}
+        transition={"all 1s ease-in-out"}
         bgImage={`linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.7)) , url(${
           photo.length > 0 && photo[background].imageSm
         })`}
@@ -97,7 +116,7 @@ export default function UnAuthHome() {
           <Flex pos={"absolute"} p={4} bottom={"0"}>
             <ImageCreditCard
               profileUrl={photo[background].profileImg}
-              profilelink={""}
+              profilelink={photo[background].userLink}
               name={photo[background].name}
             />
           </Flex>
@@ -177,14 +196,16 @@ export default function UnAuthHome() {
                 },
               }}
             >
-              <TagSelector id="culture" setTag={setTag} tag={tag} />
-              <TagSelector id="lagos" setTag={setTag} tag={tag} />
-              <TagSelector id="africa" setTag={setTag} tag={tag} />
-              <TagSelector id="wonderlust" setTag={setTag} tag={tag} />
-              <TagSelector id="sunrise" setTag={setTag} tag={tag} />
-              <TagSelector id="people" setTag={setTag} tag={tag} />
-              <TagSelector id="art" setTag={setTag} tag={tag} />
-              <TagSelector id="photography" setTag={setTag} tag={tag} />
+              {collection.map((item, index) => (
+                <Fragment key={index}>
+                  <TagSelector
+                    id={item}
+                    setTag={setTag}
+                    tag={tag}
+                    color={"brand.primary"}
+                  />
+                </Fragment>
+              ))}
             </Flex>
           </Flex>
         </Flex>

@@ -1,9 +1,15 @@
 import { Flex, Image, Text } from "@chakra-ui/react";
 import { BackgroundImage } from "../home/home";
+import Link from "next/link";
 
 export default function ImageCard(props: BackgroundImage) {
   return (
-    <Flex flexDir={"column"} fontWeight={"900"} color={"brand.mute"}>
+    <Flex
+      flexDir={"column"}
+      fontWeight={"900"}
+      color={"brand.mute"}
+      pos={"relative"}
+    >
       <Image
         boxSize={"100%"}
         src={props.imageSm}
@@ -19,9 +25,13 @@ export default function ImageCard(props: BackgroundImage) {
           borderRadius={"full"}
           mr={"2"}
           fallbackSrc="/images/placeholder.jpeg"
+          loading={"lazy"}
         />
+
         <Text fontSize={"2xs"} isTruncated>
-          {props.name}
+          <Link href={props.userLink} target="_blank" className="link">
+            {props.name}
+          </Link>
         </Text>
       </Flex>
     </Flex>

@@ -5,6 +5,7 @@ import ProfileCard from "../card/profileCard";
 import { auth } from "@/firebase/clientApp";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Login from "@/app/UserAuth/login";
+import Link from "next/link";
 
 export default function AuthNavBar() {
   const [user, loading, error] = useAuthState(auth);
@@ -35,7 +36,11 @@ export default function AuthNavBar() {
           borderColor={"brand.lightgray"}
         >
           <Flex w={"100%"} justify={"space-between"}>
-            <Text fontWeight={"900"}> Hazie_</Text>
+            <Link href={"/"}>
+              <Text fontWeight={"900"} color={"#000"}>
+                Hazie<span className="text-brand-red">_</span>
+              </Text>
+            </Link>
             <ProfileCard location={"profile"} image={user?.photoURL || ""} />
           </Flex>
         </Flex>

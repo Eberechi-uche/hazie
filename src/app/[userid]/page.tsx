@@ -1,12 +1,20 @@
 "use client";
 import ImageCard from "@/components/ui/card/ImageCard";
+import CollectionCard, {
+  CollectionCardLayout,
+} from "@/components/ui/card/collectionCard";
 import { BackgroundImage, TagSelector } from "@/components/ui/home/home";
 import { CollectinIcon, SearchIcon } from "@/components/ui/icons/icons";
+import {
+  AddCollectionModal,
+  Collection,
+} from "@/components/ui/modals/addCollectionModal";
 import AuthNavBar from "@/components/ui/nav/authNavbar";
-import { Flex, Input, SimpleGrid, Text } from "@chakra-ui/react";
+import { SearchBar } from "@/components/ui/searchBar/searchBar";
+import { Flex, Input, SimpleGrid, Text, useDisclosure } from "@chakra-ui/react";
 import { Fragment, useEffect, useState } from "react";
 import { createApi } from "unsplash-js";
-const collection = [
+const collectionTag = [
   "Photography",
   "Art",
   "People",
@@ -20,8 +28,6 @@ const collection = [
   "travel",
 ];
 const api = createApi({
-  // Don't forget to set your access token here!
-  // See https://unsplash.com/developers
   accessKey: process.env.NEXT_PUBLIC_UNSPLASH_ACCESSKEY as string,
 });
 export default function User() {
@@ -29,6 +35,8 @@ export default function User() {
   const [tag, setTag] = useState("Street Photography");
   const [view, setView] = useState("collection");
   const [search, setSearch] = useState("");
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [collection, setCollection] = useState<Collection[]>([]);
 
   function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
     setSearch(e.target.value);
@@ -42,9 +50,10 @@ export default function User() {
           const bgImages = result.response.results.map((item) => ({
             name: item.user.name,
             profileImg: item.user.profile_image.small,
-            userLink: item.user.portfolio_url,
+            userLink: item.user.links.html,
             imageLg: item.urls.full,
             imageSm: item.urls.regular,
+            alt_description: item.alt_description,
           }));
 
           setPhoto(bgImages as BackgroundImage[]);
@@ -63,7 +72,12 @@ export default function User() {
             <Flex
               w={"100%"}
               maxW={"1050px"}
-              flexWrap={"wrap"}
+              overflowX={"scroll"}
+              sx={{
+                "::-webkit-scrollbar": {
+                  display: "none",
+                },
+              }}
               fontSize={{
                 base: "xs",
                 lg: "md",
@@ -72,7 +86,7 @@ export default function User() {
               py={6}
               px={"4"}
             >
-              {collection.map((item, index) => (
+              {collectionTag.map((item, index) => (
                 <Fragment key={index}>
                   <TagSelector
                     id={item}
@@ -92,68 +106,50 @@ export default function User() {
               align={"flex-start"}
               my={6}
               justify={"space-between"}
+              flexDir={"column"}
+              h={"150px"}
             >
-              {view === "collection" && (
-                <>
-                  <Flex
-                    flexGrow={"1"}
-                    border={"1.5px dashed"}
-                    minH={"100px"}
-                    p={2}
-                    borderColor={"brand.gray"}
-                  >
-                    <Text fontWeight={"900"} fontSize={"xs"}>
-                      your collections:
-                    </Text>
-                  </Flex>
-                  <Flex
-                    ml={"4"}
-                    justify={"flex-end"}
-                    border={"1px solid"}
-                    p={"2"}
-                    borderRadius={"full"}
-                    borderColor={"brand.gray"}
-                    onClick={() => {
-                      setView("search");
-                    }}
-                  >
-                    <SearchIcon color={"#000"} />
-                  </Flex>
-                </>
-              )}
-              {view === "search" && (
-                <>
-                  <Flex w={"100%"}>
-                    <Input
-                      value={search}
-                      onChange={handleSearch}
-                      borderRadius={"none"}
-                      borderColor={"brand.gray"}
-                      focusBorderColor="#000"
-                      border={"1.2px solid"}
-                      placeholder="enter 3 or more character to filter"
-                      _placeholder={{
-                        fontWeight: "900px",
-                        fontSize: "10px",
-                      }}
-                    />
-                    <Text
-                      fontWeight={"900"}
-                      fontSize={"xs"}
-                      ml={"4"}
-                      onClick={() => {
-                        setView("collection");
-                      }}
-                    >
-                      <CollectinIcon />
-                      back to collections
-                    </Text>
-                  </Flex>
-                </>
-              )}
+              <Flex
+                w={"100%"}
+                h={"fit-content"}
+                display={view === "search" ? "none" : "flex"}
+                flexDir={"column"}
+              >
+                <CollectionCardLayout onOpen={onOpen} collection={collection} />
+                <Flex
+                  ml={"4"}
+                  border={"1.5px solid"}
+                  p={"2"}
+                  h={"fit-content"}
+                  w={"fit-content"}
+                  borderRadius={"full"}
+                  borderColor={"brand.gray"}
+                  onClick={() => {
+                    setView("search");
+                  }}
+                  my={"2"}
+                  alignSelf={"flex-end"}
+                  cursor={"pointer"}
+                >
+                  <SearchIcon color={"#000"} />
+                </Flex>
+              </Flex>
+
+              <>
+                <Flex
+                  w={"100%"}
+                  display={view === "collection" ? "none" : "flex"}
+                >
+                  <SearchBar
+                    setView={setView}
+                    searchValue={search}
+                    handleSearch={handleSearch}
+                  />
+                </Flex>
+              </>
             </Flex>
 
-            <SimpleGrid h={"70vh"} columns={[2, 3, 3, 4]} gap={"2"}>
+            <SimpleGrid columns={[2, 3, 3, 4]} gap={"2"}>
               {photo.map((item, index) => (
                 <Fragment key={index}>
                   <ImageCard {...item} />
@@ -161,6 +157,14 @@ export default function User() {
               ))}
             </SimpleGrid>
           </Flex>
+          {isOpen && (
+            <AddCollectionModal
+              isOpen={isOpen}
+              onClose={onClose}
+              collection={collection}
+              setCollection={setCollection}
+            />
+          )}
         </Flex>
       </main>
     </>
