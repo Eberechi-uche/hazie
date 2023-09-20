@@ -41,6 +41,8 @@ export default function ImageCard(props: BackgroundImage) {
         src={props.imageSm}
         alt={props.name}
         objectFit={"cover"}
+        loading={"lazy"}
+        fallbackSrc={"/images/placeholder.jpeg"}
       />
       <Flex py={"2"}>
         <Image
@@ -51,7 +53,6 @@ export default function ImageCard(props: BackgroundImage) {
           borderRadius={"full"}
           mr={"2"}
           fallbackSrc="/images/placeholder.jpeg"
-          loading={"lazy"}
         />
 
         <Text fontSize={"2xs"} isTruncated>

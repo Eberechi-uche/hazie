@@ -164,11 +164,17 @@ export default function User() {
               {loading && <Spinner alignSelf={"center"} />}
               {!loading && (
                 <SimpleGrid columns={[2, 3, 3, 4]} gap={"2"} py={"6"}>
-                  {photo.map((item, index) => (
-                    <Fragment key={index}>
-                      <ImageCard {...item} />
-                    </Fragment>
-                  ))}
+                  {photo
+                    .filter((item) => {
+                      if (item.alt_description.includes(search)) {
+                        return item;
+                      }
+                    })
+                    .map((item, index) => (
+                      <Fragment key={index}>
+                        <ImageCard {...item} />
+                      </Fragment>
+                    ))}
                 </SimpleGrid>
               )}
             </Flex>
