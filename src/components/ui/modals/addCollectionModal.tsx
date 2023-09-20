@@ -5,16 +5,16 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
-  Input,
   Button,
 } from "@chakra-ui/react";
 import { Dispatch, SetStateAction, useState } from "react";
-import { AddIcon } from "../icons/icons";
+
 import TextInput from "../input/textInput";
+import { BackgroundImage } from "../home/home";
 
 export type Collection = {
   name: string;
-  collectionItem: [] | null;
+  collectionItem: BackgroundImage[];
 };
 export function AddCollectionModal({
   isOpen,

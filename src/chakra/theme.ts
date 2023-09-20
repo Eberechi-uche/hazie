@@ -4,7 +4,7 @@ import { buttonTheme } from "./button";
 // 2. Extend the theme to include custom colors, fonts, etc
 const colors = {
   brand: {
-    green: "#00DDB3",
+    green: "#40a829",
     blue: "#00B6FE",
     yellow: "#FFBF01",
     purple: "#BA9BFC",

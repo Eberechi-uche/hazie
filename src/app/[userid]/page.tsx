@@ -11,7 +11,14 @@ import {
 } from "@/components/ui/modals/addCollectionModal";
 import AuthNavBar from "@/components/ui/nav/authNavbar";
 import { SearchBar } from "@/components/ui/searchBar/searchBar";
-import { Flex, Input, SimpleGrid, Text, useDisclosure } from "@chakra-ui/react";
+import {
+  Flex,
+  Input,
+  SimpleGrid,
+  Spinner,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { Fragment, useEffect, useState } from "react";
 import { createApi } from "unsplash-js";
 const collectionTag = [
@@ -33,6 +40,7 @@ const api = createApi({
 export default function User() {
   const [photo, setPhoto] = useState<BackgroundImage[]>([]);
   const [tag, setTag] = useState("Street Photography");
+  const [loading, setLoading] = useState(true);
   const [view, setView] = useState("collection");
   const [search, setSearch] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -43,6 +51,7 @@ export default function User() {
   }
 
   useEffect(() => {
+    setLoading(true);
     api.search
       .getPhotos({ query: tag, orientation: "landscape" })
       .then((result) => {
@@ -57,6 +66,7 @@ export default function User() {
           }));
 
           setPhoto(bgImages as BackgroundImage[]);
+          setLoading(false);
         }
       })
       .catch(() => {
@@ -64,109 +74,112 @@ export default function User() {
       });
   }, [tag]);
   return (
-    <>
-      <main>
-        <AuthNavBar />
-        <Flex border={"2px solid"}>
-          <Flex w={"100%"} bg={"#000"} justify={"center"}>
-            <Flex
-              w={"100%"}
-              maxW={"1050px"}
-              overflowX={"scroll"}
-              sx={{
-                "::-webkit-scrollbar": {
-                  display: "none",
-                },
-              }}
-              fontSize={{
-                base: "xs",
-                lg: "md",
-              }}
-              fontWeight={"900"}
-              py={6}
-              px={"4"}
-            >
-              {collectionTag.map((item, index) => (
-                <Fragment key={index}>
-                  <TagSelector
-                    id={item}
-                    setTag={setTag}
-                    tag={tag}
-                    color={"brand.primary"}
-                  />
-                </Fragment>
-              ))}
-            </Flex>
+    <Flex flexDir={"column"} pos={"relative"}>
+      <AuthNavBar />
+      <Flex>
+        <Flex w={"100%"} bg={"#000"} justify={"center"}>
+          <Flex
+            w={"100%"}
+            maxW={"1050px"}
+            overflowX={"scroll"}
+            sx={{
+              "::-webkit-scrollbar": {
+                display: "none",
+              },
+            }}
+            fontSize={{
+              base: "xs",
+              lg: "md",
+            }}
+            fontWeight={"900"}
+            py={6}
+            px={"4"}
+          >
+            {collectionTag.map((item, index) => (
+              <Fragment key={index}>
+                <TagSelector
+                  id={item}
+                  setTag={setTag}
+                  tag={tag}
+                  color={"brand.primary"}
+                />
+              </Fragment>
+            ))}
           </Flex>
         </Flex>
-        <Flex align={"center"} w={"100%"} flexDir={"column"}>
-          <Flex w={"100%"} maxW={"1050px"} flexDir={"column"} px={"4"}>
+      </Flex>
+      <Flex align={"center"} w={"100%"} flexDir={"column"}>
+        <Flex w={"100%"} maxW={"1050px"} flexDir={"column"} px={"4"}>
+          <Flex
+            w={"100%"}
+            align={"flex-start"}
+            my={6}
+            justify={"space-between"}
+            flexDir={"column"}
+            minH={"170px"}
+            pos={"sticky"}
+            top={"10px"}
+            zIndex={"2"}
+            bg={"whiteAlpha.700"}
+          >
             <Flex
               w={"100%"}
-              align={"flex-start"}
-              my={6}
-              justify={"space-between"}
+              h={"fit-content"}
+              display={view === "search" ? "none" : "flex"}
               flexDir={"column"}
-              h={"150px"}
             >
+              <CollectionCardLayout onOpen={onOpen} collection={collection} />
               <Flex
-                w={"100%"}
+                border={"1.5px solid"}
+                p={"2"}
                 h={"fit-content"}
-                display={view === "search" ? "none" : "flex"}
-                flexDir={"column"}
+                w={"fit-content"}
+                borderRadius={"full"}
+                borderColor={"brand.gray"}
+                onClick={() => {
+                  setView("search");
+                }}
+                alignSelf={"flex-end"}
+                cursor={"pointer"}
+                my={"4"}
               >
-                <CollectionCardLayout onOpen={onOpen} collection={collection} />
-                <Flex
-                  ml={"4"}
-                  border={"1.5px solid"}
-                  p={"2"}
-                  h={"fit-content"}
-                  w={"fit-content"}
-                  borderRadius={"full"}
-                  borderColor={"brand.gray"}
-                  onClick={() => {
-                    setView("search");
-                  }}
-                  my={"2"}
-                  alignSelf={"flex-end"}
-                  cursor={"pointer"}
-                >
-                  <SearchIcon color={"#000"} />
-                </Flex>
+                <SearchIcon color={"#000"} />
               </Flex>
-
-              <>
-                <Flex
-                  w={"100%"}
-                  display={view === "collection" ? "none" : "flex"}
-                >
-                  <SearchBar
-                    setView={setView}
-                    searchValue={search}
-                    handleSearch={handleSearch}
-                  />
-                </Flex>
-              </>
             </Flex>
 
-            <SimpleGrid columns={[2, 3, 3, 4]} gap={"2"}>
+            <>
+              <Flex
+                w={"100%"}
+                display={view === "collection" ? "none" : "flex"}
+              >
+                <SearchBar
+                  setView={setView}
+                  searchValue={search}
+                  handleSearch={handleSearch}
+                />
+              </Flex>
+            </>
+          </Flex>
+          {loading && <Spinner alignSelf={"center"} />}
+          {!loading && (
+            <SimpleGrid columns={[2, 3, 3, 4]} gap={"2"} py={"6"}>
               {photo.map((item, index) => (
                 <Fragment key={index}>
                   <ImageCard {...item} />
                 </Fragment>
               ))}
             </SimpleGrid>
-          </Flex>
-          {isOpen && (
-            <AddCollectionModal
-              isOpen={isOpen}
-              onClose={onClose}
-              collection={collection}
-              setCollection={setCollection}
-            />
           )}
         </Flex>
-      </main>
-    </>
+        {isOpen && (
+          <AddCollectionModal
+            isOpen={isOpen}
+            onClose={onClose}
+            collection={collection}
+            setCollection={setCollection}
+          />
+        )}
+      </Flex>
+    </Flex>
   );
 }
