@@ -10,7 +10,7 @@ export default function NavBar() {
         <Flex justify={"space-between"} w={"100%"} align={"center"}>
           <Link href={"/"}>
             <Text fontWeight={"900"} color={"white"}>
-              Hazie<span className="text-brand-red">_</span>
+              Hazie_<span className="text-brand-red">_</span>
             </Text>
           </Link>
 
@@ -25,7 +25,7 @@ export default function NavBar() {
             }}
             size={"sm"}
             onClick={() => {
-              route.push("/UserAuth?auth=sign-in");
+              route.push("user/UserAuth?auth=sign-in");
             }}
           >
             Sign in

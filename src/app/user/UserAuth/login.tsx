@@ -43,7 +43,7 @@ export default function Login() {
       </Text>
       <Flex w={"100%"} my={"2"}>
         <Text> New user ? </Text>
-        <Link href={"/UserAuth?auth=sign-up"}>
+        <Link href={"/user/UserAuth?auth=sign-up"}>
           <Text
             color={"brand.primary"}
             mx={"2"}

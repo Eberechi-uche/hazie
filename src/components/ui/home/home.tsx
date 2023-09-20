@@ -162,7 +162,7 @@ export default function UnAuthHome() {
                 variant={"brandPrimary"}
                 w={"50%"}
                 onClick={() => {
-                  route.push("/UserAuth?auth=sign-up");
+                  route.push("user/UserAuth?auth=sign-up");
                 }}
               >
                 Get started

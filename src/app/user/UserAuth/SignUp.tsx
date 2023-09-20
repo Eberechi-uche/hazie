@@ -84,7 +84,7 @@ export default function SignUp() {
           <>
             <Flex w={"100%"} my={"2"}>
               <Text> Already have an account ?</Text>
-              <Link href={"/UserAuth?auth=sign-in"}>
+              <Link href={"/user/UserAuth?auth=sign-in"}>
                 <Text
                   color={"brand.primary"}
                   mx={"2"}

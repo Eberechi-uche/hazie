@@ -16,8 +16,8 @@ export default function UserAuth() {
         placeItems={"center"}
         bgImage={`linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.7)) , url(${
           pageParam === "sign-in"
-            ? "images/background.jpg"
-            : "images/background3.jpg"
+            ? "/images/background4.jpg"
+            : "/images/background3.jpg"
         })`}
         bgPosition={"center"}
         bgSize={"cover"}

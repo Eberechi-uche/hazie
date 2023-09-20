@@ -21,7 +21,7 @@ export default function AuthNavBar() {
           align={"center"}
           justify={"center"}
         >
-          <Link href={"/UserAuth?auth=sign-in"}>
+          <Link href={"user/UserAuth?auth=sign-in"}>
             <Flex flexDir={"column"} w={"100%"}>
               <Text
                 fontWeight={"900"}
@@ -49,7 +49,7 @@ export default function AuthNavBar() {
           <Flex w={"100%"} justify={"space-between"}>
             <Link href={"/"}>
               <Text fontWeight={"900"} color={"#000"}>
-                Hazie<span className="text-brand-red">_</span>
+                Hazie_<span className="text-brand-red">_</span>
               </Text>
             </Link>
             <ProfileCard location={"profile"} image={user?.photoURL || ""} />
