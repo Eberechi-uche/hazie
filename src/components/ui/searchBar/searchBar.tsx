@@ -1,17 +1,15 @@
-import { Input, Text } from "@chakra-ui/react";
+import { Flex, Input, Text } from "@chakra-ui/react";
 
-import { CollectinIcon } from "../icons/icons";
-import { Dispatch, SetStateAction } from "react";
-
+type SearchBarProps = {
+  searchValue: string;
+  handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  PlaceHolder: string;
+};
 export function SearchBar({
   searchValue,
   handleSearch,
-  setView,
-}: {
-  searchValue: string;
-  handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  setView: Dispatch<SetStateAction<string>>;
-}) {
+  PlaceHolder,
+}: SearchBarProps) {
   return (
     <>
       <Input
@@ -21,24 +19,31 @@ export function SearchBar({
         borderColor={"brand.gray"}
         focusBorderColor="#000"
         border={"1.2px solid"}
-        placeholder="enter 3 or more character to filter"
+        placeholder={PlaceHolder}
         _placeholder={{
           fontWeight: "900px",
           fontSize: "10px",
         }}
       />
-      <Text
-        fontWeight={"900"}
-        fontSize={"xs"}
-        ml={"4"}
-        onClick={() => {
-          setView("collection");
+    </>
+  );
+}
+
+export function SearchBarLayout(props: SearchBarProps) {
+  return (
+    <>
+      <Flex
+        w={{
+          base: "100%",
+          lg: "50%",
         }}
-        cursor={"pointer"}
       >
-        <CollectinIcon />
-        back to collections
-      </Text>
+        <SearchBar
+          searchValue={props.searchValue}
+          handleSearch={props.handleSearch}
+          PlaceHolder={props.PlaceHolder}
+        />
+      </Flex>
     </>
   );
 }

@@ -15,7 +15,7 @@ export default function CollectionCard(props: Collection & CollectionCardProp) {
   const [files, setFiles] = useState(props.collectionItem);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [dragOverStyle, setDragOverStyle] = useState({
-    width: "100px",
+    width: "200px",
     bg: "brand.gray",
     color: "brand.darkgray",
   });
@@ -28,7 +28,7 @@ export default function CollectionCard(props: Collection & CollectionCardProp) {
     e.preventDefault();
     e.stopPropagation();
     setDragOverStyle({
-      width: "100px",
+      width: "200px",
       bg: "brand.green",
       color: "brand.offwhite",
     });
@@ -42,7 +42,7 @@ export default function CollectionCard(props: Collection & CollectionCardProp) {
 
     setTimeout(() => {
       setDragOverStyle({
-        width: "100px",
+        width: "200px",
         bg: "brand.gray",
         color: "brand.darkgray",
       });
@@ -53,7 +53,7 @@ export default function CollectionCard(props: Collection & CollectionCardProp) {
     e.stopPropagation();
 
     setDragOverStyle({
-      width: "100px",
+      width: "200px",
       bg: "brand.gray",
       color: "brand.darkgray",
     });
@@ -63,7 +63,7 @@ export default function CollectionCard(props: Collection & CollectionCardProp) {
     e.stopPropagation();
     e.dataTransfer.dropEffect = "copy";
     setDragOverStyle({
-      width: "200px",
+      width: "300px",
       bg: "#000",
       color: "#fff",
     });
@@ -72,7 +72,7 @@ export default function CollectionCard(props: Collection & CollectionCardProp) {
     <>
       <Flex
         w={dragOverStyle.width}
-        h={"100px"}
+        h={"150px"}
         bg={dragOverStyle.bg}
         mx={"2"}
         borderRadius={"2px"}

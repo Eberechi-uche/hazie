@@ -1,32 +1,20 @@
 import { Flex, Image, Text } from "@chakra-ui/react";
 import { BackgroundImage } from "../home/home";
 import Link from "next/link";
-import { useState } from "react";
 
 export default function ImageCard(props: BackgroundImage) {
-  const [dragStyleView, setDragStyleView] = useState({
-    size: "100%",
-    opacity: "1",
-  });
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
-    // e.dataTransfer.setData('text/plain', {...props})
     e.dataTransfer.dropEffect = "copy";
     e.dataTransfer.effectAllowed = "copy";
 
     const data = JSON.stringify({ ...props });
     e.dataTransfer.setData("files", data);
   };
-  // const handleDragEnd = (e: React.DragEvent<HTMLDivElement>) => {
-  //   e.stopPropagation();
-  //   setDragStyleView({
-  //     size: "100%",
-  //     opacity: "1",
-  //   });
-  // };
+
   return (
     <Flex
-      w={dragStyleView.size}
-      h={dragStyleView.size}
+      w={"100%"}
+      h={"100%"}
       flexDir={"column"}
       fontWeight={"900"}
       color={"brand.mute"}
@@ -38,10 +26,11 @@ export default function ImageCard(props: BackgroundImage) {
     >
       <Image
         boxSize={"100%"}
+        maxH={"150px"}
         src={props.imageSm}
         alt={props.name}
         objectFit={"cover"}
-        loading={"lazy"}
+        loading={"eager"}
         fallbackSrc={"/images/placeholder.jpeg"}
       />
       <Flex py={"2"}>

@@ -8,7 +8,10 @@ import {
   Collection,
 } from "@/components/ui/modals/addCollectionModal";
 import AuthNavBar from "@/components/ui/nav/authNavbar";
-import { SearchBar } from "@/components/ui/searchBar/searchBar";
+import {
+  SearchBar,
+  SearchBarLayout,
+} from "@/components/ui/searchBar/searchBar";
 import { auth } from "@/firebase/clientApp";
 import { Flex, SimpleGrid, Spinner, useDisclosure } from "@chakra-ui/react";
 import { Fragment, useEffect, useState } from "react";
@@ -35,7 +38,6 @@ export default function User() {
   const [user, , error] = useAuthState(auth);
   const [tag, setTag] = useState("Street Photography");
   const [loading, setLoading] = useState(true);
-  const [view, setView] = useState("collection");
   const [search, setSearch] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [collection, setCollection] = useState<Collection[]>([]);
@@ -43,30 +45,39 @@ export default function User() {
   function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
     setSearch(e.target.value);
   }
+  function handleTagSearch(e: React.ChangeEvent<HTMLInputElement>) {
+    setTag(() => e.target.value);
+  }
+
+  function fetchImage() {
+    setLoading(true);
+    api.search
+      .getPhotos({ query: tag, orientation: "landscape" })
+      .then((result) => {
+        if (result.response?.results) {
+          const bgImages = result.response.results.map((item) => ({
+            name: item.user.name,
+            profileImg: item.user.profile_image.small,
+            userLink: item.user.links.html,
+            imageLg: item.urls.regular,
+            imageSm: item.urls.small,
+            alt_description: item.alt_description,
+          }));
+
+          setPhoto(bgImages as BackgroundImage[]);
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        console.log("something went wrong!");
+      });
+  }
 
   useEffect(() => {
     if (user) {
-      setLoading(true);
-      api.search
-        .getPhotos({ query: tag, orientation: "landscape" })
-        .then((result) => {
-          if (result.response?.results) {
-            const bgImages = result.response.results.map((item) => ({
-              name: item.user.name,
-              profileImg: item.user.profile_image.small,
-              userLink: item.user.links.html,
-              imageLg: item.urls.full,
-              imageSm: item.urls.regular,
-              alt_description: item.alt_description,
-            }));
-
-            setPhoto(bgImages as BackgroundImage[]);
-            setLoading(false);
-          }
-        })
-        .catch(() => {
-          console.log("something went wrong!");
-        });
+      if (tag.length >= 3) {
+        fetchImage();
+      }
     }
   }, [tag, user]);
   return (
@@ -74,11 +85,19 @@ export default function User() {
       <AuthNavBar />
       {user && (
         <>
-          <Flex>
-            <Flex w={"100%"} bg={"#000"} justify={"center"}>
+          <Flex w={"100%"} justify={"center"}>
+            <Flex
+              maxW={"1050px"}
+              align={"center"}
+              w={"100%"}
+              px={"4"}
+              flexWrap={{
+                base: "wrap",
+                md: "nowrap",
+              }}
+            >
               <Flex
                 w={"100%"}
-                maxW={"1050px"}
                 overflowX={"scroll"}
                 sx={{
                   "::-webkit-scrollbar": {
@@ -91,7 +110,9 @@ export default function User() {
                 }}
                 fontWeight={"900"}
                 py={6}
-                px={"4"}
+                mr={{
+                  lg: "4",
+                }}
               >
                 {collectionTag.map((item, index) => (
                   <Fragment key={index}>
@@ -104,10 +125,16 @@ export default function User() {
                   </Fragment>
                 ))}
               </Flex>
+              <SearchBar
+                PlaceHolder="search collection - enter 3 or more character to search"
+                handleSearch={handleTagSearch}
+                searchValue={tag}
+              />
             </Flex>
           </Flex>
+
           <Flex align={"center"} w={"100%"} flexDir={"column"}>
-            <Flex w={"100%"} maxW={"1050px"} flexDir={"column"} px={"4"}>
+            <Flex w={"100%"} maxW={"1050px"} flexDir={"column"} px={"2"}>
               <Flex
                 w={"100%"}
                 align={"flex-start"}
@@ -116,52 +143,23 @@ export default function User() {
                 flexDir={"column"}
                 minH={"170px"}
                 pos={"sticky"}
-                top={"10px"}
-                zIndex={"1"}
-                bg={"whiteAlpha.700"}
+                top={"1px"}
+                zIndex={"2"}
               >
-                <Flex
-                  w={"100%"}
-                  h={"fit-content"}
-                  display={view === "search" ? "none" : "flex"}
-                  flexDir={"column"}
-                >
-                  <CollectionCardLayout
-                    onOpen={onOpen}
-                    collection={collection}
-                  />
-                  <Flex
-                    border={"1.5px solid"}
-                    p={"2"}
-                    h={"fit-content"}
-                    w={"fit-content"}
-                    borderRadius={"full"}
-                    borderColor={"brand.gray"}
-                    onClick={() => {
-                      setView("search");
-                    }}
-                    alignSelf={"flex-end"}
-                    cursor={"pointer"}
-                    my={"4"}
-                  >
-                    <SearchIcon color={"#000"} />
-                  </Flex>
-                </Flex>
-
-                <>
-                  <Flex
-                    w={"100%"}
-                    display={view === "collection" ? "none" : "flex"}
-                  >
-                    <SearchBar
-                      setView={setView}
-                      searchValue={search}
-                      handleSearch={handleSearch}
-                    />
-                  </Flex>
-                </>
+                <CollectionCardLayout onOpen={onOpen} collection={collection} />
               </Flex>
-              {loading && <Spinner alignSelf={"center"} />}
+              <SearchBarLayout
+                searchValue={search}
+                handleSearch={handleSearch}
+                PlaceHolder="enter 3 or more character to filter"
+              />
+              {loading && (
+                <Spinner
+                  alignSelf={"center"}
+                  justifySelf={"center"}
+                  my={"50%"}
+                />
+              )}
               {!loading && (
                 <SimpleGrid columns={[2, 3, 3, 4]} gap={"2"} py={"6"}>
                   {photo
