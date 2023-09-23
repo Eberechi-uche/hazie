@@ -12,14 +12,16 @@ type CollectionCardProp = {
 // function reducer(){
 //   return
 // }
+
+const collectiondefaultui = {
+  width: "200px",
+  bg: "#fff",
+  color: "brand.mute",
+};
 export default function CollectionCard(props: Collection & CollectionCardProp) {
   const [files, setFiles] = useState(props.collectionItem);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [dragOverStyle, setDragOverStyle] = useState({
-    width: "200px",
-    bg: "brand.gray",
-    color: "brand.darkgray",
-  });
+  const [dragOverStyle, setDragOverStyle] = useState(collectiondefaultui);
 
   const HandleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     let updateFile;
@@ -41,11 +43,7 @@ export default function CollectionCard(props: Collection & CollectionCardProp) {
           color: "brand.offwhite",
         });
         setTimeout(() => {
-          setDragOverStyle({
-            width: "200px",
-            bg: "brand.gray",
-            color: "brand.darkgray",
-          });
+          setDragOverStyle(collectiondefaultui);
         }, 1500);
         return;
       }
@@ -53,21 +51,13 @@ export default function CollectionCard(props: Collection & CollectionCardProp) {
       setFiles(updateFile);
     }
     setTimeout(() => {
-      setDragOverStyle({
-        width: "200px",
-        bg: "brand.gray",
-        color: "brand.darkgray",
-      });
+      setDragOverStyle(collectiondefaultui);
     }, 1500);
   };
   const HandleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    setDragOverStyle({
-      width: "200px",
-      bg: "brand.gray",
-      color: "brand.darkgray",
-    });
+    setDragOverStyle(collectiondefaultui);
   };
 
   const handleRemoveItem = (id: string) => {
@@ -92,7 +82,7 @@ export default function CollectionCard(props: Collection & CollectionCardProp) {
         h={"150px"}
         bg={dragOverStyle.bg}
         mx={"2"}
-        borderRadius={"2px"}
+        borderRadius={"5px"}
         flexDir={"column"}
         justify={"space-between"}
         p={"2"}
@@ -154,12 +144,11 @@ export function CollectionCardLayout({
   return (
     <Flex
       flexGrow={"1"}
-      bg={"brand.lightgray"}
+      bg={"brand.offwhite"}
       minH={"130px"}
       p={2}
-      borderColor={"brand.gray"}
       w={"100%"}
-      borderRadius={"3px"}
+      borderTopRadius={"5px"}
       onDragEnter={(e) => {
         handleDragEnter(e);
       }}
@@ -171,7 +160,6 @@ export function CollectionCardLayout({
     >
       <Flex flexDir={"column"} justify={"space-between"} mr={"4"}>
         <Text>
-          <CollectinIcon />
           your <br />
           collections:
         </Text>

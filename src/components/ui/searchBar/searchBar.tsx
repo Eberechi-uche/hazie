@@ -1,24 +1,20 @@
-import { Flex, Input, Text } from "@chakra-ui/react";
+import { Button, Flex, Input, Text } from "@chakra-ui/react";
 
 type SearchBarProps = {
-  searchValue: string;
-  handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value: string;
+  updateValue: (e: React.ChangeEvent<HTMLInputElement>) => void;
   PlaceHolder: string;
 };
-export function SearchBar({
-  searchValue,
-  handleSearch,
-  PlaceHolder,
-}: SearchBarProps) {
+export function SearchBar({ value, updateValue, PlaceHolder }: SearchBarProps) {
   return (
     <>
       <Input
-        value={searchValue}
-        onChange={handleSearch}
+        value={value}
+        onChange={updateValue}
         borderRadius={"none"}
         borderColor={"brand.gray"}
         focusBorderColor="#000"
-        border={"1.2px solid"}
+        border={"0.5px solid"}
         placeholder={PlaceHolder}
         _placeholder={{
           fontWeight: "900px",
@@ -29,7 +25,13 @@ export function SearchBar({
   );
 }
 
-export function SearchBarLayout(props: SearchBarProps) {
+type SearchBarLayoutProps = {
+  showButton: boolean;
+  handleSearch?: () => void;
+  loading?: boolean;
+};
+
+export function SearchBarLayout(props: SearchBarProps & SearchBarLayoutProps) {
   return (
     <>
       <Flex
@@ -37,12 +39,19 @@ export function SearchBarLayout(props: SearchBarProps) {
           base: "100%",
           lg: "50%",
         }}
+        align={"center"}
+        border={"1px solid"}
       >
         <SearchBar
-          searchValue={props.searchValue}
-          handleSearch={props.handleSearch}
+          value={props.value}
+          updateValue={props.updateValue}
           PlaceHolder={props.PlaceHolder}
         />
+        {props.showButton && (
+          <Button onClick={props.handleSearch} isLoading={props.loading}>
+            search
+          </Button>
+        )}
       </Flex>
     </>
   );

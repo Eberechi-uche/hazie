@@ -13,7 +13,13 @@ import {
   SearchBarLayout,
 } from "@/components/ui/searchBar/searchBar";
 import { auth } from "@/firebase/clientApp";
-import { Flex, SimpleGrid, Spinner, useDisclosure } from "@chakra-ui/react";
+import {
+  Flex,
+  SimpleGrid,
+  Spinner,
+  useDisclosure,
+  Text,
+} from "@chakra-ui/react";
 import { it } from "node:test";
 import { Fragment, useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -37,9 +43,10 @@ const api = createApi({
 export default function User() {
   const [photo, setPhoto] = useState<BackgroundImage[]>([]);
   const [user, , error] = useAuthState(auth);
-  const [tag, setTag] = useState("Street Photography");
+  const [tag, setTag] = useState("");
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [collection, setCollection] = useState<Collection[]>([
     {
@@ -49,17 +56,21 @@ export default function User() {
     },
   ]);
 
+  function handleFilter(e: React.ChangeEvent<HTMLInputElement>) {
+    setFilter(e.target.value);
+  }
   function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
     setSearch(e.target.value);
   }
-  function handleTagSearch(e: React.ChangeEvent<HTMLInputElement>) {
-    setTag(() => e.target.value);
-  }
 
-  function fetchImage() {
+  function fetchImage(query: string) {
     setLoading(true);
     api.search
-      .getPhotos({ query: tag, orientation: "landscape" })
+      .getPhotos({
+        query: query || "street art",
+        orientation: "landscape",
+        perPage: 25,
+      })
       .then((result) => {
         if (result.response?.results) {
           const bgImages = result.response.results.map((item) => ({
@@ -83,11 +94,9 @@ export default function User() {
 
   useEffect(() => {
     if (user) {
-      if (tag.length >= 3) {
-        fetchImage();
-      }
+      fetchImage(tag);
     }
-  }, [tag, user]);
+  }, [user, tag]);
   return (
     <Flex flexDir={"column"} pos={"relative"}>
       <AuthNavBar />
@@ -133,10 +142,15 @@ export default function User() {
                   </Fragment>
                 ))}
               </Flex>
-              <SearchBar
-                PlaceHolder="search collection - enter 3 or more character to search"
-                handleSearch={handleTagSearch}
-                searchValue={tag}
+              <SearchBarLayout
+                value={search}
+                updateValue={handleSearch}
+                showButton={true}
+                loading={loading}
+                handleSearch={() => {
+                  fetchImage(search);
+                }}
+                PlaceHolder="search specific name"
               />
             </Flex>
           </Flex>
@@ -157,22 +171,23 @@ export default function User() {
                 <CollectionCardLayout onOpen={onOpen} collection={collection} />
               </Flex>
               <SearchBarLayout
-                searchValue={search}
-                handleSearch={handleSearch}
+                value={filter}
+                updateValue={handleFilter}
+                showButton={false}
                 PlaceHolder="enter 3 or more character to filter"
               />
               {loading && (
                 <Spinner
                   alignSelf={"center"}
                   justifySelf={"center"}
-                  my={"50%"}
+                  my={"10%"}
                 />
               )}
               {!loading && (
                 <SimpleGrid columns={[2, 3, 3, 4]} gap={"2"} py={"6"}>
                   {photo
                     .filter((item) => {
-                      if (item.alt_description.includes(search)) {
+                      if (item.alt_description.includes(filter)) {
                         return item;
                       }
                     })
