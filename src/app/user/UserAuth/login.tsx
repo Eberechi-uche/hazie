@@ -14,6 +14,7 @@ export default function Login() {
     Password: "",
   });
   const route = useRouter();
+
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -28,9 +29,11 @@ export default function Login() {
   async function handleSignIn() {
     const { Email, Password } = userDefails;
     const result = await signInWithEmailAndPassword(Email, Password);
+    console.log(error);
     if (result) {
       route.push(`/${extractUserId(result.user.email!)}`);
       return;
+    } else {
     }
   }
   return (
@@ -57,7 +60,7 @@ export default function Login() {
       </Flex>
       {error && (
         <Text fontSize={"xs"} color={"red.600"} fontWeight={"900"}>
-          {FIREBASE_ERROR[error.message as keyof typeof FIREBASE_ERROR]}
+          {FIREBASE_ERROR[error.code as keyof typeof FIREBASE_ERROR]}
         </Text>
       )}
       <form>
