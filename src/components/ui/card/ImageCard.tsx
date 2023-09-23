@@ -1,12 +1,16 @@
 import { Flex, Image, Text } from "@chakra-ui/react";
 import { BackgroundImage } from "../home/home";
 import Link from "next/link";
+import { RemoveIcon } from "../icons/icons";
 
-export default function ImageCard(props: BackgroundImage) {
+type ImageCardProps = {
+  delete?: (id: string) => void;
+};
+export default function ImageCard(props: BackgroundImage & ImageCardProps) {
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
+    e.stopPropagation();
     e.dataTransfer.dropEffect = "copy";
     e.dataTransfer.effectAllowed = "copy";
-
     const data = JSON.stringify({ ...props });
     e.dataTransfer.setData("files", data);
   };
@@ -33,22 +37,34 @@ export default function ImageCard(props: BackgroundImage) {
         loading={"eager"}
         fallbackSrc={"/images/placeholder.jpeg"}
       />
-      <Flex py={"2"}>
-        <Image
-          boxSize={"15px"}
-          src={props.profileImg}
-          alt={props.name}
-          objectFit={"cover"}
-          borderRadius={"full"}
-          mr={"2"}
-          fallbackSrc="/images/placeholder.jpeg"
-        />
+      <Flex w={"100%"} align={"center"} justify={"space-between"}>
+        <Flex py={"2"}>
+          <Image
+            boxSize={"15px"}
+            src={props.profileImg}
+            alt={props.name}
+            objectFit={"cover"}
+            borderRadius={"full"}
+            mr={"2"}
+            fallbackSrc="/images/placeholder.jpeg"
+          />
 
-        <Text fontSize={"2xs"} isTruncated>
-          <Link href={props.userLink} target="_blank" className="link">
-            {props.name}
-          </Link>
-        </Text>
+          <Text fontSize={"2xs"} isTruncated>
+            <Link href={props.userLink} target="_blank" className="link">
+              {props.name}
+            </Link>
+          </Text>
+        </Flex>
+        {props.delete && (
+          <Text
+            cursor={"pointer"}
+            onClick={() => {
+              props.delete && props.delete(props.id);
+            }}
+          >
+            <RemoveIcon />
+          </Text>
+        )}
       </Flex>
     </Flex>
   );

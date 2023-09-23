@@ -5,7 +5,7 @@ import { buttonTheme } from "./button";
 const colors = {
   brand: {
     green: "#40a829",
-    blue: "#00B6FE",
+    share: "#0E3386",
     yellow: "#FFBF01",
     purple: "#BA9BFC",
     gray: "#DBDBDE",

@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/searchBar/searchBar";
 import { auth } from "@/firebase/clientApp";
 import { Flex, SimpleGrid, Spinner, useDisclosure } from "@chakra-ui/react";
+import { it } from "node:test";
 import { Fragment, useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { createApi } from "unsplash-js";
@@ -40,7 +41,13 @@ export default function User() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [collection, setCollection] = useState<Collection[]>([]);
+  const [collection, setCollection] = useState<Collection[]>([
+    {
+      name: "drag items here to add - click to view collection",
+      note: "when in modal drag images out of modal to remove image from collection",
+      collectionItem: [],
+    },
+  ]);
 
   function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
     setSearch(e.target.value);
@@ -62,6 +69,7 @@ export default function User() {
             imageLg: item.urls.regular,
             imageSm: item.urls.small,
             alt_description: item.alt_description,
+            id: item.id,
           }));
 
           setPhoto(bgImages as BackgroundImage[]);
@@ -168,8 +176,8 @@ export default function User() {
                         return item;
                       }
                     })
-                    .map((item, index) => (
-                      <Fragment key={index}>
+                    .map((item) => (
+                      <Fragment key={item.id}>
                         <ImageCard {...item} />
                       </Fragment>
                     ))}

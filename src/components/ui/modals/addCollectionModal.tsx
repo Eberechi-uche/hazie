@@ -9,12 +9,13 @@ import {
 } from "@chakra-ui/react";
 import { Dispatch, SetStateAction, useState } from "react";
 
-import TextInput from "../input/textInput";
+import TextInput, { TextAreaInput } from "../input/textInput";
 import { BackgroundImage } from "../home/home";
 
 export type Collection = {
   name: string;
   collectionItem: BackgroundImage[];
+  note: string;
 };
 export function AddCollectionModal({
   isOpen,
@@ -27,17 +28,32 @@ export function AddCollectionModal({
   collection: Collection[] | [];
   setCollection: Dispatch<SetStateAction<Collection[]>>;
 }) {
-  const [collectionName, setCollectionName] = useState("");
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCollectionName(e.target.value);
+  const [collectionName, setCollectionName] = useState({
+    title: "",
+    note: "",
+  });
+  const handleInputChange = (
+    e:
+      | React.ChangeEvent<HTMLInputElement> &
+          React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setCollectionName((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
   const createCollection = () => {
     const newCollection: Collection = {
-      name: collectionName,
+      name: collectionName.title,
       collectionItem: [],
+      note: collectionName.note,
     };
     setCollection((prev) => [...prev, newCollection]);
-    setCollectionName("");
+    setCollectionName({
+      title: "",
+      note: "",
+    });
   };
   return (
     <>
@@ -48,11 +64,23 @@ export function AddCollectionModal({
           <ModalCloseButton />
           <ModalBody>
             <TextInput
-              value={collectionName}
+              value={collectionName.title}
               setValue={handleInputChange}
               placeHolder="your collection name"
+              name={"title"}
             />
-            <Button my={"4"} size={"sm"} onClick={createCollection}>
+            <TextAreaInput
+              value={collectionName.note}
+              setValue={handleInputChange}
+              placeHolder="collection note (optional)"
+              name={"note"}
+            />
+            <Button
+              my={"4"}
+              size={"sm"}
+              onClick={createCollection}
+              isDisabled={collectionName.title.length === 0}
+            >
               Add
             </Button>
           </ModalBody>

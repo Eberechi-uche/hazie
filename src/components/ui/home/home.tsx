@@ -39,6 +39,7 @@ export type BackgroundImage = {
   imageLg: string;
   userLink: string;
   alt_description: string;
+  id: string;
 };
 const api = createApi({
   // Don't forget to set your access token here!
@@ -65,6 +66,7 @@ export default function UnAuthHome() {
             imageLg: item.urls.full,
             imageSm: item.urls.regular,
             alt_description: item.alt_description,
+            id: item.id,
           }));
 
           setPhoto(bgImages as BackgroundImage[]);

@@ -4,6 +4,7 @@ import { Collection } from "../modals/addCollectionModal";
 import { Fragment, useState } from "react";
 
 import { ViewCollectionModal } from "../modals/viewCollectionModal";
+import { collection } from "firebase/firestore";
 type CollectionCardProp = {
   id: number;
 };
@@ -19,10 +20,7 @@ export default function CollectionCard(props: Collection & CollectionCardProp) {
     bg: "brand.gray",
     color: "brand.darkgray",
   });
-  const HandleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
+
   const HandleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     let updateFile;
     e.preventDefault();
@@ -33,13 +31,27 @@ export default function CollectionCard(props: Collection & CollectionCardProp) {
       color: "brand.offwhite",
     });
     const data = e.dataTransfer.getData("files");
-
     if (data) {
       const imageDetails = JSON.parse(data);
+      const added = files.find((item) => item.id === imageDetails.id);
+      if (added) {
+        setDragOverStyle({
+          width: "200px",
+          bg: "red.500",
+          color: "brand.offwhite",
+        });
+        setTimeout(() => {
+          setDragOverStyle({
+            width: "200px",
+            bg: "brand.gray",
+            color: "brand.darkgray",
+          });
+        }, 1500);
+        return;
+      }
       updateFile = [...files, imageDetails];
       setFiles(updateFile);
     }
-
     setTimeout(() => {
       setDragOverStyle({
         width: "200px",
@@ -51,12 +63,17 @@ export default function CollectionCard(props: Collection & CollectionCardProp) {
   const HandleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
-
     setDragOverStyle({
       width: "200px",
       bg: "brand.gray",
       color: "brand.darkgray",
     });
+  };
+
+  const handleRemoveItem = (id: string) => {
+    const prevState = files;
+    const newFiles = files.filter((element) => element.id !== id);
+    setFiles(newFiles);
   };
   const HandleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -90,9 +107,6 @@ export default function CollectionCard(props: Collection & CollectionCardProp) {
         onDragOver={(e) => {
           HandleDragOver(e);
         }}
-        onDragEnter={(e) => {
-          HandleDragEnter(e);
-        }}
         onDragLeave={(e) => {
           HandleDragLeave(e);
         }}
@@ -117,6 +131,8 @@ export default function CollectionCard(props: Collection & CollectionCardProp) {
             onClose={onClose}
             isOpen={isOpen}
             collectionName={props.name}
+            note={props.note}
+            handleRemove={handleRemoveItem}
           />
         )}
       </Flex>
@@ -156,10 +172,12 @@ export function CollectionCardLayout({
       <Flex flexDir={"column"} justify={"space-between"} mr={"4"}>
         <Text>
           <CollectinIcon />
-          your collections:
+          your <br />
+          collections:
         </Text>
         <Text onClick={onOpen} cursor={"pointer"}>
-          <AddIcon /> Add
+          <AddIcon /> Create <br />
+          collection
         </Text>
       </Flex>
 
