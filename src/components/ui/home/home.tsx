@@ -49,7 +49,7 @@ const api = createApi({
 
 export default function UnAuthHome() {
   const [photo, setPhoto] = useState<BackgroundImage[]>([]);
-  const [tag, setTag] = useState("Street Photography");
+  const [tag, setTag] = useState("wallpaper");
   const [background, setBackground] = useState(0);
 
   const route = useRouter();
@@ -132,8 +132,8 @@ export default function UnAuthHome() {
           color={"#fff"}
           fontWeight={"900"}
           h={{
-            base: "65%",
-            md: "50%",
+            base: "75%",
+            md: "80%",
             lg: "85%",
           }}
           justify={"space-between"}
@@ -144,7 +144,7 @@ export default function UnAuthHome() {
           <Flex
             w={{
               base: "80%",
-              md: "60%",
+              md: "80%",
               lg: "50%",
             }}
             flexDir={"column"}
@@ -152,12 +152,22 @@ export default function UnAuthHome() {
             <Text
               fontSize={{
                 base: "2xl",
-                md: "3xl",
+                md: "5xl",
                 lg: "4xl",
               }}
             >
-              Curate and organise photos. create the perfect the collection for
-              your need
+              Empower your visual assets - elevate your image curation and
+              organization
+            </Text>
+            <Text
+              fontWeight={"400"}
+              fontSize={{
+                base: "xs",
+                md: "sm",
+              }}
+            >
+              create image collection for your needs as simple as draging and
+              droping it.
             </Text>
             <Flex my={"4"}>
               <Button
