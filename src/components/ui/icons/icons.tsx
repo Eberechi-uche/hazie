@@ -21,7 +21,7 @@ export function SearchIcon(props: any) {
 export function AddIcon(props: any) {
   return (
     <>
-      <Icon fontSize={"13px"}>
+      <Icon fontSize={"16px"}>
         <svg
           width="20"
           height="20"

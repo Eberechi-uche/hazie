@@ -15,7 +15,7 @@ type CollectionCardProp = {
 
 const collectiondefaultui = {
   width: "200px",
-  bg: "#fff",
+  bg: "brand.lightgray",
   color: "brand.mute",
 };
 export default function CollectionCard(props: Collection & CollectionCardProp) {
@@ -144,28 +144,32 @@ export function CollectionCardLayout({
   return (
     <Flex
       flexGrow={"1"}
-      bg={"brand.offwhite"}
+      bg={"#fff"}
       minH={"130px"}
-      p={2}
+      p={4}
       w={"100%"}
-      borderTopRadius={"5px"}
       onDragEnter={(e) => {
         handleDragEnter(e);
       }}
-      fontWeight={"900"}
+      fontWeight={"700"}
       fontSize={{
-        base: "xx-small",
-        lg: "xs",
+        base: "xs",
+        lg: "sm",
       }}
+      flexDir={"column"}
     >
-      <Flex flexDir={"column"} justify={"space-between"} mr={"4"}>
-        <Text>
-          your <br />
-          collections:
-        </Text>
+      <Flex
+        justify={"space-between"}
+        w={{
+          base: "100%",
+          md: "50%",
+        }}
+        py={"4"}
+        textTransform={"capitalize"}
+      >
+        <Text fontWeight={"500"}>your collections {collection.length}</Text>
         <Text onClick={onOpen} cursor={"pointer"}>
-          <AddIcon /> Create <br />
-          collection
+          <AddIcon /> Create collection
         </Text>
       </Flex>
 
