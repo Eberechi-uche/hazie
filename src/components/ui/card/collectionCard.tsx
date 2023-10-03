@@ -1,17 +1,13 @@
 import { Flex, Text, useDisclosure } from "@chakra-ui/react";
 import { AddIcon, CollectinIcon } from "../icons/icons";
 import { Collection } from "../modals/addCollectionModal";
-import { Fragment, useState } from "react";
+import { Fragment, useContext, useState } from "react";
 
 import { ViewCollectionModal } from "../modals/viewCollectionModal";
-import { collection } from "firebase/firestore";
+
 type CollectionCardProp = {
   id: number;
 };
-
-// function reducer(){
-//   return
-// }
 
 const collectiondefaultui = {
   width: "200px",

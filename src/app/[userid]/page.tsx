@@ -51,7 +51,7 @@ export default function User() {
   const [collection, setCollection] = useState<Collection[]>([
     {
       name: "drag items here to add - click to view collection",
-      note: "when in modal drag images out of modal to remove image from collection",
+      note: "Add Extra collection notes here for more context",
       collectionItem: [],
     },
   ]);

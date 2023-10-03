@@ -9,11 +9,13 @@ import {
   SimpleGrid,
   Flex,
 } from "@chakra-ui/react";
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useContext, useState } from "react";
 
 import { BackgroundImage } from "../home/home";
 import ImageCard from "../card/ImageCard";
-import { ShareIcon } from "../icons/icons";
+
+import { CollectionContext } from "@/contexts/collectionCtx";
+import { useRouter } from "next/navigation";
 
 type ViewCollectionModalprops = {
   isOpen: boolean;
@@ -36,18 +38,13 @@ export function ViewCollectionModal({
   note,
   handleRemove,
 }: ViewCollectionModalprops) {
-  const ref = useRef();
-  const [view, setView] = useState("blackAlpha.800");
-  const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setView("red.500");
-  };
+  const { setCollection, currentCollection } = useContext(CollectionContext);
+  const route = useRouter();
 
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose} size={"lg"} autoFocus={false}>
-        <ModalOverlay bg={view} />
+        <ModalOverlay />
         <ModalContent
           w={"80%"}
           borderRadius={"2px"}
@@ -76,14 +73,37 @@ export function ViewCollectionModal({
               fontWeight={"900"}
               my={"4"}
               cursor={"pointer"}
-              _hover={{
-                color: "brand.share",
-                letterSpacing: "2px",
-              }}
               color={"brand.mute"}
-              transition={"all 0.5s ease-in-out"}
+              justify={"space-between"}
             >
-              <Text textTransform={"uppercase"}>Share collection</Text>
+              <Text
+                textTransform={"uppercase"}
+                _hover={{
+                  color: "brand.share",
+                  letterSpacing: "2px",
+                }}
+                transition={"all 0.5s ease-in-out"}
+              >
+                Share collection
+              </Text>
+              <Text
+                textTransform={"uppercase"}
+                onClick={() => {
+                  setCollection({
+                    name: collectionName,
+                    collectionItem: [...collection],
+                    note: note,
+                  });
+                  route.push("/collection");
+                }}
+                _hover={{
+                  color: "brand.share",
+                  letterSpacing: "2px",
+                }}
+                transition={"all 0.5s ease-in-out"}
+              >
+                view all
+              </Text>
             </Flex>
           </ModalHeader>
           <ModalCloseButton />
