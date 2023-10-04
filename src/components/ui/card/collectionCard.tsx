@@ -11,7 +11,7 @@ type CollectionCardProp = {
 
 const collectiondefaultui = {
   width: "200px",
-  bg: "brand.lightgray",
+  bg: "brand.offwhite",
   color: "brand.mute",
 };
 export default function CollectionCard(props: Collection & CollectionCardProp) {
@@ -81,7 +81,7 @@ export default function CollectionCard(props: Collection & CollectionCardProp) {
         borderRadius={"5px"}
         flexDir={"column"}
         justify={"space-between"}
-        p={"2"}
+        p={"6"}
         fontWeight={"600"}
         fontSize={"xs"}
         color={dragOverStyle.color}

@@ -5,14 +5,21 @@ import { RemoveIcon } from "../icons/icons";
 
 type ImageCardProps = {
   delete?: (id: string) => void;
+  getDragElementRef?: (id: string) => void;
+  getTargetElementRef?: (id: string) => void;
+  handleDragEnd?: () => void;
 };
 export default function ImageCard(props: BackgroundImage & ImageCardProps) {
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
     e.stopPropagation();
     e.dataTransfer.dropEffect = "copy";
     e.dataTransfer.effectAllowed = "copy";
+
     const data = JSON.stringify({ ...props });
     e.dataTransfer.setData("files", data);
+    if (props.getDragElementRef) {
+      props.getDragElementRef(props.id);
+    }
   };
 
   return (
@@ -26,7 +33,16 @@ export default function ImageCard(props: BackgroundImage & ImageCardProps) {
       onDragStart={(e) => {
         handleDragStart(e);
       }}
-      draggable={"true"}
+      onDragOver={(e) => {
+        if (props.getTargetElementRef) {
+          props.getTargetElementRef(props.id);
+        }
+      }}
+      onDragEnd={(e) => {
+        if (props.handleDragEnd) {
+          props.handleDragEnd();
+        }
+      }}
     >
       <Image
         boxSize={"100%"}
