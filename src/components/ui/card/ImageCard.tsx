@@ -12,8 +12,9 @@ type ImageCardProps = {
 export default function ImageCard(props: BackgroundImage & ImageCardProps) {
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
     e.stopPropagation();
+
     e.dataTransfer.dropEffect = "copy";
-    e.dataTransfer.effectAllowed = "copy";
+    e.dataTransfer.effectAllowed = "all";
 
     const data = JSON.stringify({ ...props });
     e.dataTransfer.setData("files", data);
@@ -40,6 +41,7 @@ export default function ImageCard(props: BackgroundImage & ImageCardProps) {
       }}
       onDragEnd={(e) => {
         if (props.handleDragEnd) {
+          e.preventDefault();
           props.handleDragEnd();
         }
       }}
