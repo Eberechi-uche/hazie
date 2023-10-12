@@ -85,6 +85,7 @@ export default function Collection() {
                 bgSize={"cover"}
                 borderRadius={"6px"}
                 m={"2"}
+                key={item.id}
               />
             </Draggable>
           ))}
