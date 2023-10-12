@@ -75,7 +75,7 @@ export default function Collection() {
       >
         {currentCollection.collectionItem.length > 0 &&
           images.map((item) => (
-            <Draggable bounds={"parent"}>
+            <Draggable bounds={"parent"} key={item.id}>
               <Box
                 className="handle drag"
                 bgImage={`url(${item.imageSm})`}
@@ -85,7 +85,6 @@ export default function Collection() {
                 bgSize={"cover"}
                 borderRadius={"6px"}
                 m={"2"}
-                key={item.id}
               />
             </Draggable>
           ))}
