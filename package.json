@@ -27,5 +27,8 @@
     "react-firebase-hooks": "^5.1.1",
     "typescript": "5.2.2",
     "unsplash-js": "^7.0.18"
+  },
+  "devDependencies": {
+    "encoding": "^0.1.13"
   }
 }
